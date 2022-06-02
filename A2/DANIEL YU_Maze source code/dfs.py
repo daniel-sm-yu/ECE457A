@@ -36,14 +36,12 @@ def dfs(start, end):
             return
 
         for x, y in directions:
-            newPath = list(path)
-            newPath.append((i + x, j + y))
-            openList.append(newPath)
+            openList.append(path + [(i + x, j + y)])
 
 
 print("S to E1:")
-dfs((13, 2), (5, 23))
+dfs((11, 2), (19, 23))
 print("S to E2:")
-dfs((13, 2), (3, 2))
+dfs((11, 2), (21, 2))
 print("(0, 0) to (24, 24):")
 dfs((0, 0), (24, 24))

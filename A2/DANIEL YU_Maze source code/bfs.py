@@ -36,14 +36,12 @@ def bfs(start, end):
             return
 
         for x, y in directions:
-            newPath = list(path)
-            newPath.append((i + x, j + y))
-            openList.append(newPath)
+            openList.append(path + [(i + x, j + y)])
 
 
 print("S to E1:")
-bfs((13, 2), (5, 23))
+bfs((11, 2), (19, 23))
 print("S to E2:")
-bfs((13, 2), (3, 2))
+bfs((11, 2), (21, 2))
 print("(0, 0) to (24, 24):")
 bfs((0, 0), (24, 24))
