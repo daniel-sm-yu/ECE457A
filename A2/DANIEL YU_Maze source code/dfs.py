@@ -5,7 +5,7 @@ from maze import maze, printMaze
 
 m = len(maze)
 n = len(maze[0])
-directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+directions = [(0, -1), (-1, 0), (0, 1), (1, 0)]
 
 
 def dfs(start, end):
