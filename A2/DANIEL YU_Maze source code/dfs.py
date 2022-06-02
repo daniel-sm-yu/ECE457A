@@ -1,7 +1,7 @@
 
 # Depth-First Search
 
-from maze import maze, printMaze
+from maze import *
 
 m = len(maze)
 n = len(maze[0])
@@ -41,4 +41,9 @@ def dfs(start, end):
             openList.append(newPath)
 
 
+print("S to E1:")
+dfs((13, 2), (5, 23))
+print("S to E2:")
+dfs((13, 2), (3, 2))
+print("(0, 0) to (24, 24):")
 dfs((0, 0), (24, 24))
