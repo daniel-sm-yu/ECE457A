@@ -1,5 +1,5 @@
 
-# Breath-First Search
+# Depth-First Search
 
 from maze import maze, printMaze
 
@@ -8,12 +8,12 @@ n = len(maze[0])
 directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 
 
-def bfs(start, end):
-    openList = [[start]]  # queue of paths
+def dfs(start, end):
+    openList = [[start]]  # stack of paths
     closedList = []
 
     while openList:
-        path = openList.pop(0)
+        path = openList.pop()
         node = path[-1]
 
         i, j = node
@@ -41,4 +41,4 @@ def bfs(start, end):
             openList.append(newPath)
 
 
-bfs((0, 0), (24, 24))
+dfs((0, 0), (24, 24))
