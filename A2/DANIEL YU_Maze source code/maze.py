@@ -49,5 +49,5 @@ maze = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 
 def printMaze(maze):
-    for row in maze:
+    for row in maze[::-1]:
         print(row)
