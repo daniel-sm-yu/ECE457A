@@ -22,8 +22,6 @@ def dfs(start, end):
         if i < 0 or i >= m or j < 0 or j >= n or maze[i][j] or node in closedList:
             continue
 
-        closedList.append(node)
-
         if node == end:
             print("path: " + str(path))
             print("cost: " + str(len(path)))
@@ -34,6 +32,8 @@ def dfs(start, end):
             # printMaze(maze)
 
             return
+
+        closedList.append(node)
 
         for x, y in directions:
             openList.append(path + [(i + x, j + y)])
