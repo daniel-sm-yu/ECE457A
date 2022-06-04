@@ -4,14 +4,14 @@ import random
 
 def cost(solution):
     x1, x2 = solution
-    a = (x1 - math.pi) ** 2
-    b = (x2 - math.pi) ** 2
-    return - math.cos(x1) * math.cos(x2) * math.exp(- a - b)
+    a = (x1 - math.pi) * math.pi / 180
+    b = (x2 - math.pi) * math.pi / 180
+    return - math.cos(x1) * math.cos(x2) * math.exp(- a ** 2 - b ** 2)
 
 
 def getNeighbor(solution, range=5):
     x, y = solution
-    return (x + random.randint(-range, range), y + random.randint(-range, range))
+    return (x + random.uniform(-range, range), y + random.uniform(-range, range))
 
 
 # set curr solution to initial solution
@@ -29,15 +29,14 @@ def getNeighbor(solution, range=5):
 #         decrease temp
 #     until max iterations
 
-# print(cost((3, 2)))
+# part i: generate 10 random initial points
+points = []
+for i in range(10):
+    x = random.randint(-100, 100)
+    y = random.randint(-100, 100)
+    point = (x, y)
+    points.append((cost(point), point))
 
-# grid = [[0 for _ in range(50)] for _ in range(50)]
-
-# for i in range(900):
-#     x, y = getNeighbor((15, 15))
-#     grid[x][y] = 1
-
-# grid[15][15] = 8
-
-# for row in grid:
-#     print(row)
+points.sort()
+for x in points:
+    print(x)
