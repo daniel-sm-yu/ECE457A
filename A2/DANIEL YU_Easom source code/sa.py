@@ -6,6 +6,7 @@ def cost(solution):
     x1, x2 = solution
     a = (x1 - math.pi)
     b = (x2 - math.pi)
+
     return - math.cos(x1) * math.cos(x2) * math.exp(- a ** 2 - b ** 2)
 
 
@@ -34,15 +35,8 @@ def slowDecrease(temp, b):
 
 
 def sa(initialSolution, initialTemp, annealingSchedule, annealingConst):
-    # set curr solution to initial solution
     solution = initialSolution
-
-    # set curr temp to initial temp
     temp = initialTemp
-
-    # select a temp reduction function (use the passed in function)
-
-    iterations = 0
 
     while temp > (0.0001 * initialTemp):
         currCost = cost(solution)
@@ -58,9 +52,8 @@ def sa(initialSolution, initialTemp, annealingSchedule, annealingConst):
 
         solution = nextSolution
         temp = annealingSchedule(temp, annealingConst)
-        iterations += 1
 
-    return (solution, iterations)
+    return solution
 
 
 # generate 10 random initial points
@@ -87,14 +80,15 @@ goodSolutions = []
 for _ in range(10):
     temp = random.uniform(500, 1000)
 
+    # try 3 schedule functions with 3 different alpha values
     for v in variations:
         schedule, const = v
-        solution, iterations = sa(point, temp, schedule, const)
+        solution = sa(point, temp, schedule, const)
 
         if cost(solution) < 0:
             goodSolutions.append((cost(solution), [solution, v, temp]))
 
 goodSolutions.sort()
 
-for solution in goodSolutions:
-    print(solution)
+# for solution in goodSolutions:
+#     print(solution)
