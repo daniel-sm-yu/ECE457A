@@ -4,39 +4,97 @@ import random
 
 def cost(solution):
     x1, x2 = solution
-    a = (x1 - math.pi) * math.pi / 180
-    b = (x2 - math.pi) * math.pi / 180
+    a = (x1 - math.pi)
+    b = (x2 - math.pi)
     return - math.cos(x1) * math.cos(x2) * math.exp(- a ** 2 - b ** 2)
 
 
-def getNeighbor(solution, range=5):
+def getNeighbor(solution, range=2):
     x, y = solution
-    return (x + random.uniform(-range, range), y + random.uniform(-range, range))
+    newX, newY = x + random.uniform(-range, range), y + \
+        random.uniform(-range, range)
+
+    while newX < -100 or newX > 100 or newY < -100 or newY > 100:
+        newX, newY = x + random.uniform(-range, range), y + \
+            random.uniform(-range, range)
+
+    return (newX, newY)
 
 
-# set curr solution to initial solution
+def linear(temp, a):
+    return temp - a
 
-# set curr temp to initial temp
 
-# select a temp reduction function
+def geometric(temp, a):
+    return temp * a
 
-# repeat
-#     repeat
-#         select a solution from the neighborhood
-#         calculate change in cost
-#         if cost is lower, accept new solition
-#         else, apply prob function
-#         decrease temp
-#     until max iterations
 
-# part i: generate 10 random initial points
-points = []
+def slowDecrease(temp, b):
+    return temp / (1 + b * temp)
+
+
+def sa(initialSolution, initialTemp, annealingSchedule, annealingConst):
+    # set curr solution to initial solution
+    solution = initialSolution
+
+    # set curr temp to initial temp
+    temp = initialTemp
+
+    # select a temp reduction function (use the passed in function)
+
+    iterations = 0
+
+    while temp > (0.0001 * initialTemp):
+        currCost = cost(solution)
+        # select a solution from the neighborhood
+        nextSolution = getNeighbor(solution)
+        nextCost = cost(nextSolution)
+        changeInCost = nextCost - currCost
+
+        while changeInCost >= 0 and random.random() > math.exp(- changeInCost / temp):
+            nextSolution = getNeighbor(solution)
+            nextCost = cost(nextSolution)
+            changeInCost = nextCost - currCost
+
+        solution = nextSolution
+        temp = annealingSchedule(temp, annealingConst)
+        iterations += 1
+
+    return (solution, iterations)
+
+
+# generate 10 random initial points
+costAndPoints = []
 for i in range(10):
-    x = random.randint(-100, 100)
-    y = random.randint(-100, 100)
+    x = random.uniform(-100, 100)
+    y = random.uniform(-100, 100)
     point = (x, y)
-    points.append((cost(point), point))
+    costAndPoints.append((cost(point), point))
 
-points.sort()
-for x in points:
-    print(x)
+costAndPoints.sort()
+_, point = costAndPoints[0]
+
+variations = [(linear, 0.5), (linear, 1), (linear, 2),
+              (geometric, 0.9), (geometric, 0.99), (geometric, 0.999),
+              (slowDecrease, 0.001), (slowDecrease, 0.0005), (slowDecrease, 0.0001)]
+
+print("initial solution: " + str(point) +
+      " cost: " + str(cost(point)))
+
+goodSolutions = []
+
+# generate 10 random initial temps
+for _ in range(10):
+    temp = random.uniform(500, 1000)
+
+    for v in variations:
+        schedule, const = v
+        solution, iterations = sa(point, temp, schedule, const)
+
+        if cost(solution) < 0:
+            goodSolutions.append((cost(solution), [solution, v, temp]))
+
+goodSolutions.sort()
+
+for solution in goodSolutions:
+    print(solution)
