@@ -1,6 +1,7 @@
 
 # Depth-First Search
 
+from copy import deepcopy
 from maze import *
 
 m = len(maze)
@@ -27,11 +28,12 @@ def dfs(start, end):
             print("cost: " + str(len(path)))
             print("number of explored nodes: " + str(len(closedList)))
 
+            mazeCopy = deepcopy(maze)
             step = 2
             for a, b in path:
-                maze[a][b] = step
+                mazeCopy[a][b] = step
                 step += 1
-            printMaze(maze)
+            printMaze(mazeCopy)
 
             return
 
