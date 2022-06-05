@@ -40,6 +40,10 @@ def sa(initialSolution, initialTemp, annealingSchedule, annealingConst):
 
     while temp > (0.0001 * initialTemp):
         currCost = cost(solution)
+
+        if currCost < -0.99:
+            break
+
         # select a solution from the neighborhood
         nextSolution = getNeighbor(solution)
         nextCost = cost(nextSolution)
@@ -90,5 +94,5 @@ for _ in range(10):
 
 goodSolutions.sort()
 
-# for solution in goodSolutions:
-#     print(solution)
+for solution in goodSolutions:
+    print(solution)

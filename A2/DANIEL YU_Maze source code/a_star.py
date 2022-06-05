@@ -34,6 +34,12 @@ def a_star(start, end):
             print("cost: " + str(len(path)))
             print("number of explored nodes: " + str(len(closedList)))
 
+            step = 2
+            for a, b in path:
+                maze[a][b] = step
+                step += 1
+            printMaze(maze)
+
             return
 
         closedList.append(node)

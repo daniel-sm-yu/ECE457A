@@ -50,4 +50,9 @@ maze = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 def printMaze(maze):
     for row in maze[::-1]:
-        print(row)
+        string = ""
+        for x in row:
+            string += str(x) + " "
+            if x < 10:
+                string += " "
+        print(string)
