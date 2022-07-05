@@ -46,6 +46,18 @@ flow = [
 
 # encode solution as a 20-element permutation list, value is department number
 n = 20
+# tabu list size 
+tabuTenure = 8
+# stopping criterion
+maxIterations = 100
+
+# tabu structure
+tabu = [[0 for _ in range(n)] for _ in range(n)]
+
+def decrementTabu():
+    for i in range(n):
+        for j in range(n):
+            tabu[i][j] = max(0, tabu[i][j] - 1)
 
 def cost(solution):
     cost = 0
@@ -64,17 +76,43 @@ def cost(solution):
     return cost
 
 def fullNeighborhood(solution):
-    neighbors = []
+    neighborsAndSwaps = []
 
     for i in range(n):
         for j in range(i + 1, n):
-            neighbors.append(solution[:i] + [solution[j]] + solution[i + 1:j] + [solution[i]] + solution[j + 1:])
+            neighbor = solution[:i] + [solution[j]] + solution[i + 1:j] + [solution[i]] + solution[j + 1:]
+            swap = (i, j)
+            neighborsAndSwaps.append((neighbor, swap))
 
-    return sorted(neighbors, key=cost)
+    return neighborsAndSwaps
 
-initialSolution = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+def move(neighborsAndSwaps):
+    neighborsAndSwaps.sort(key=lambda x: cost(x[0]))
 
-for x in fullNeighborhood(initialSolution):
-    print(x, cost(x))
+    for neighbor, swap in neighborsAndSwaps:
+        if tabu[swap[0]][swap[1]] > 0:
+            continue
 
-print(len(fullNeighborhood(initialSolution)))
+        return neighbor, swap
+
+solution = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+bestSolution = solution
+bestSolutionCost = cost(solution)
+
+for _ in range(maxIterations):
+    # create a candidate list of solutions
+    candidateSolutions = fullNeighborhood(solution)
+
+    # evaluate solutions and choose the best admissable solution
+    solution, swap = move(candidateSolutions)
+    solutionCost = cost(solution)
+
+    if solutionCost < bestSolutionCost:
+        bestSolution = solution
+        bestSolutionCost = solutionCost
+
+    # update tabu
+    decrementTabu()
+    tabu[swap[0]][swap[1]] = tabuTenure
+
+print(bestSolution, bestSolutionCost)
