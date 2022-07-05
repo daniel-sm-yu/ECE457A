@@ -55,6 +55,7 @@ maxIterations = 100
 
 # tabu structure
 tabu = [[0 for _ in range(n)] for _ in range(n)]
+freqTabu = set() # set of strings
 
 def decrementTabu():
     for i in range(n):
@@ -103,6 +104,13 @@ def TS(initialSolution):
     bestSolutionCost = cost(initialSolution)
 
     for i in range(maxIterations):
+        # restart search every 20 iterations
+        if i % 20 == 19:
+            solution = random.sample([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], n)
+            
+            while ",".join([str(x) for x in solution]) in freqTabu:
+                solution = random.sample([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], n)
+
         # create a candidate list of solutions
         candidateSolutions = fullNeighborhood(solution)
 
@@ -114,14 +122,13 @@ def TS(initialSolution):
             bestSolution = solution
             bestSolutionCost = solutionCost
 
-        # change tabuTenure every 20 iterations
-        if i % 20 == 19:
-            tabuTenure = random.randint(1, 30)
-            print("tabu list size:", tabuTenure)
-
         # update tabu
         decrementTabu()
         tabu[swap[0]][swap[1]] = tabuTenure
+        freqTabu.add(",".join([str(x) for x in solution]))
+
+        
+
     
     return bestSolution
 
