@@ -44,13 +44,14 @@ flow = [
     [1,5,0,5,1,5,10,10,2,2,5,5,5,0,10,0,0,1,6,0],
 ]
 
-# solution structure: list of length 20, value is department number
+# encode solution as a 20-element permutation list, value is department number
+n = 20
 
 def cost(solution):
     cost = 0
 
-    for i in range(len(solution)):
-        for j in range(i + 1, len(solution)):
+    for i in range(n):
+        for j in range(i + 1, n):
             # distance is between location (indices)
             d = distance[i][j]
             # flow is between departments (value)
@@ -62,5 +63,18 @@ def cost(solution):
 
     return cost
 
-print(cost([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]))
-print(cost([10, 19, 20, 6, 15, 7, 5, 14, 1, 4, 2, 9, 13, 12, 3, 8, 17, 16, 18, 11]))
+def fullNeighborhood(solution):
+    neighbors = []
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            neighbors.append(solution[:i] + [solution[j]] + solution[i + 1:j] + [solution[i]] + solution[j + 1:])
+
+    return neighbors
+
+initialSolution = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
+for x in fullNeighborhood(initialSolution):
+    print(x)
+
+print(len(fullNeighborhood(initialSolution)))
