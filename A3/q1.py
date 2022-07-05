@@ -70,11 +70,11 @@ def fullNeighborhood(solution):
         for j in range(i + 1, n):
             neighbors.append(solution[:i] + [solution[j]] + solution[i + 1:j] + [solution[i]] + solution[j + 1:])
 
-    return neighbors
+    return sorted(neighbors, key=cost)
 
 initialSolution = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
 for x in fullNeighborhood(initialSolution):
-    print(x)
+    print(x, cost(x))
 
 print(len(fullNeighborhood(initialSolution)))
