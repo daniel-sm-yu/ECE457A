@@ -77,14 +77,22 @@ def cost(solution):
 
     return cost
 
-def fullNeighborhood(solution):
+def neighborhood(solution):
     neighborsAndSwaps = []
 
-    for i in range(n):
-        for j in range(i + 1, n):
-            neighbor = solution[:i] + [solution[j]] + solution[i + 1:j] + [solution[i]] + solution[j + 1:]
-            swap = (i, j)
-            neighborsAndSwaps.append((neighbor, swap))
+    for _ in range(n):
+        x = random.randint(0, 19)
+        y = random.randint(0, 19)
+
+        while y == x:
+            y = random.randint(0, 19)
+
+        i = min(x, y)
+        j = max(x, y)
+
+        neighbor = solution[:i] + [solution[j]] + solution[i + 1:j] + [solution[i]] + solution[j + 1:]
+        swap = (i, j)
+        neighborsAndSwaps.append((neighbor, swap))
 
     return neighborsAndSwaps
 
@@ -102,10 +110,10 @@ def TS(initialSolution):
     bestSolution = initialSolution
     bestSolutionCost = cost(initialSolution)
 
-    for i in range(maxIterations):
+    for _ in range(maxIterations):
         # create a candidate list of solutions
-        candidateSolutions = fullNeighborhood(solution)
-
+        candidateSolutions = neighborhood(solution)
+        print(len(candidateSolutions))
         # evaluate solutions and choose the best admissable solution
         solution, swap = move(candidateSolutions)
         solutionCost = cost(solution)
@@ -113,11 +121,6 @@ def TS(initialSolution):
         if solutionCost < bestSolutionCost:
             bestSolution = solution
             bestSolutionCost = solutionCost
-
-        # change tabuTenure every 20 iterations
-        if i % 20 == 0:
-            tabuTenure = random.randint(1, 30)
-            print("tabu list size:", tabuTenure)
 
         # update tabu
         decrementTabu()
