@@ -47,7 +47,7 @@ flow = [
 # encode solution as a 20-element permutation list, value is department number
 n = 20
 # tabu list size 
-tabuTenure = 8
+tabuTenure = 5
 # stopping criterion
 maxIterations = 100
 
