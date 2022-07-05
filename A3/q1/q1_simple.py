@@ -95,24 +95,31 @@ def move(neighborsAndSwaps):
 
         return neighbor, swap
 
-solution = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-bestSolution = solution
-bestSolutionCost = cost(solution)
+def TS(initialSolution):
+    solution = initialSolution
+    bestSolution = initialSolution
+    bestSolutionCost = cost(initialSolution)
 
-for _ in range(maxIterations):
-    # create a candidate list of solutions
-    candidateSolutions = fullNeighborhood(solution)
+    for _ in range(maxIterations):
+        # create a candidate list of solutions
+        candidateSolutions = fullNeighborhood(solution)
 
-    # evaluate solutions and choose the best admissable solution
-    solution, swap = move(candidateSolutions)
-    solutionCost = cost(solution)
+        # evaluate solutions and choose the best admissable solution
+        solution, swap = move(candidateSolutions)
+        solutionCost = cost(solution)
 
-    if solutionCost < bestSolutionCost:
-        bestSolution = solution
-        bestSolutionCost = solutionCost
+        if solutionCost < bestSolutionCost:
+            bestSolution = solution
+            bestSolutionCost = solutionCost
 
-    # update tabu
-    decrementTabu()
-    tabu[swap[0]][swap[1]] = tabuTenure
+        # update tabu
+        decrementTabu()
+        tabu[swap[0]][swap[1]] = tabuTenure
+    
+    return bestSolution
 
-print(bestSolution, bestSolutionCost)
+initialSolution = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+bestSolution = TS(initialSolution)
+
+print(bestSolution)
+print("cost:", cost(bestSolution))
