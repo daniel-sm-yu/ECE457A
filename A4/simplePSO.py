@@ -1,13 +1,62 @@
-def cost(x, y):
+import random
+
+
+def cost(xAndY):
+    x, y = xAndY
+    return 4 * x**2 - 2.1 * x**4 + (x**6)/3 + x*y - 4 * y**2 + 4 * y**4
+
+
+def particleCost(particle):
+    x = particle.x
+    y = particle.y
     return 4 * x**2 - 2.1 * x**4 + (x**6)/3 + x*y - 4 * y**2 + 4 * y**4
 
 
 class Particle:
-    def __init__(self, x, y, x_velocity, y_velocity):
-        self.x = x
-        self.y = y
-        self.x_velocity = x_velocity
-        self.y_velocity = y_velocity
+    def __init__(self):
+        self.x = random.uniform(-5, 5)
+        self.y = random.uniform(-5, 5)
+        self.x_velocity = random.uniform(-0.5, 0.5)
+        self.y_velocity = random.uniform(-0.5, 0.5)
+        self.personal_best = (self.x, self.y)
 
 
-print(cost(0.089840, -0.712659))
+def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
+    swarm = [Particle() for _ in range(population_size)]
+    global_best = (swarm[0].x, swarm[0].y)
+
+    for _ in range(max_iterations):
+        x_r1 = random.random()
+        y_r1 = random.random()
+        x_r2 = random.random()
+        y_r2 = random.random()
+
+        for particle in swarm:
+            # update personal best?
+            if particleCost(particle) < cost(particle.personal_best):
+                particle.personal_best = (particle.x, particle.y)
+
+            # update global best?
+            if particleCost(particle) < cost(global_best):
+                global_best = (particle.x, particle.y)
+
+            # calculate velocity
+            x_personal_best, y_personal_best = particle.personal_best
+            x_global_best, y_global_best = global_best
+
+            # x velocity
+            x_personal_term = c * x_r1 * (x_personal_best - particle.x)
+            x_global_term = c * x_r2 * (x_global_best - particle.x)
+            particle.x_velocity = w * particle.x_velocity + x_personal_term * x_global_term
+
+            # y velocity
+            y_personal_term = c * y_r1 * (y_personal_best - particle.y)
+            y_global_term = c * y_r2 * (y_global_best - particle.y)
+            particle.y_velocity = w * particle.y_velocity + y_personal_term * y_global_term
+
+            # calculate position
+            particle.x += particle.x_velocity
+            particle.y += particle.y_velocity
+
+
+simplePSO(5, 10, 0.6, 0.4)
