@@ -32,11 +32,11 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
         y_r2 = random.random()
 
         for particle in swarm:
-            # update personal best?
+            # update personal best
             if particleCost(particle) < cost(particle.personal_best):
                 particle.personal_best = (particle.x, particle.y)
 
-            # update global best?
+            # update global best
             if particleCost(particle) < cost(global_best):
                 global_best = (particle.x, particle.y)
 
@@ -58,5 +58,17 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
             particle.x += particle.x_velocity
             particle.y += particle.y_velocity
 
+            # ensure position is within range
+            particle.x = max(-5, particle.x)
+            particle.x = min(5, particle.x)
 
-simplePSO(5, 10, 0.6, 0.4)
+            particle.y = max(-5, particle.y)
+            particle.y = min(5, particle.y)
+
+    for p in swarm:
+        print(cost(p.personal_best), p.personal_best)
+
+    print(cost(global_best), global_best)
+
+
+simplePSO(500, 1000, 0.6, 0.4)
