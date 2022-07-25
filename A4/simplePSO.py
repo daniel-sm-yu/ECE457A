@@ -24,6 +24,8 @@ class Particle:
 def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
     swarm = [Particle() for _ in range(population_size)]
     global_best = (swarm[0].x, swarm[0].y)
+    avg_fitnesses = []
+    best_fitnesses = []
 
     for _ in range(max_iterations):
         x_r1 = random.random()
@@ -31,13 +33,18 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
         x_r2 = random.random()
         y_r2 = random.random()
 
+        sum_fitness = 0
+
         for particle in swarm:
+            curr_cost = particleCost(particle)
+            sum_fitness += curr_cost
+
             # update personal best
-            if particleCost(particle) < cost(particle.personal_best):
+            if curr_cost < cost(particle.personal_best):
                 particle.personal_best = (particle.x, particle.y)
 
             # update global best
-            if particleCost(particle) < cost(global_best):
+            if curr_cost < cost(global_best):
                 global_best = (particle.x, particle.y)
 
             # calculate velocity
@@ -65,10 +72,12 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
             particle.y = max(-5, particle.y)
             particle.y = min(5, particle.y)
 
-    for p in swarm:
-        print(cost(p.personal_best), p.personal_best)
+        avg_fitness = sum_fitness / population_size
+        avg_fitnesses.append(avg_fitness)
+        best_fitnesses.append(cost(global_best))
 
-    print(cost(global_best), global_best)
+    print(avg_fitnesses)
+    print(best_fitnesses)
 
 
-simplePSO(500, 1000, 0.6, 0.4)
+simplePSO(5, 1000, 0.6, 0.4)
