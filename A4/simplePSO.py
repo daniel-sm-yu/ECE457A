@@ -1,4 +1,5 @@
 import random
+import matplotlib.pyplot as plt
 
 
 def cost(xAndY):
@@ -28,11 +29,6 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
     best_fitnesses = []
 
     for _ in range(max_iterations):
-        x_r1 = random.random()
-        y_r1 = random.random()
-        x_r2 = random.random()
-        y_r2 = random.random()
-
         sum_fitness = 0
 
         for particle in swarm:
@@ -50,6 +46,12 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
             # calculate velocity
             x_personal_best, y_personal_best = particle.personal_best
             x_global_best, y_global_best = global_best
+
+            # generate r values
+            x_r1 = random.random()
+            y_r1 = random.random()
+            x_r2 = random.random()
+            y_r2 = random.random()
 
             # x velocity
             x_personal_term = c * x_r1 * (x_personal_best - particle.x)
@@ -79,5 +81,19 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
     print(avg_fitnesses)
     print(best_fitnesses)
 
+    plt.plot(avg_fitnesses)
+    plt.title('simple PSO average fitness')
+    plt.ylabel('average fitness')
+    plt.xlabel('iteration')
+    plt.show()
 
-simplePSO(5, 1000, 0.6, 0.4)
+    plt.plot(best_fitnesses)
+    plt.title('simple PSO best fitness')
+    plt.ylabel('best fitness')
+    plt.xlabel('iteration')
+    plt.show()
+
+
+w = 0.792
+c = 1.4944
+simplePSO(50, 25, w, c)
