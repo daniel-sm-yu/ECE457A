@@ -63,6 +63,16 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
             y_global_term = c * y_r2 * (y_global_best - particle.y)
             particle.y_velocity = w * particle.y_velocity + y_personal_term + y_global_term
 
+            # ensure velocity is within speed limit
+            particle.x_velocity = max(-4, particle.x_velocity)
+            particle.x_velocity = min(4, particle.x_velocity)
+
+            particle.y_velocity = max(-4, particle.y_velocity)
+            particle.y_velocity = min(4, particle.y_velocity)
+
+            print(particle.x_velocity)
+            print(particle.y_velocity)
+
             # calculate position
             particle.x += particle.x_velocity
             particle.y += particle.y_velocity
