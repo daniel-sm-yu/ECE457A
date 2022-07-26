@@ -54,12 +54,12 @@ def linearPSO(max_iterations, population_size, w, c):  # c = c1 = c2
             # x velocity
             x_personal_term = c * r1 * (x_personal_best - particle.x)
             x_global_term = c * r2 * (x_global_best - particle.x)
-            particle.x_velocity = w * particle.x_velocity + x_personal_term * x_global_term
+            particle.x_velocity = w * particle.x_velocity + x_personal_term + x_global_term
 
             # y velocity
             y_personal_term = c * r1 * (y_personal_best - particle.y)
             y_global_term = c * r2 * (y_global_best - particle.y)
-            particle.y_velocity = w * particle.y_velocity + y_personal_term * y_global_term
+            particle.y_velocity = w * particle.y_velocity + y_personal_term + y_global_term
 
             # calculate position
             particle.x += particle.x_velocity
