@@ -96,4 +96,4 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
 
 w = 0.792
 c = 1.4944
-simplePSO(50, 25, w, c)
+simplePSO(50, 10, w, c)

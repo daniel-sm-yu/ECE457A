@@ -94,4 +94,4 @@ def linearPSO(max_iterations, population_size, w, c):  # c = c1 = c2
 
 w = 0.792
 c = 1.4944
-linearPSO(50, 25, w, c)
+linearPSO(50, 10, w, c)
