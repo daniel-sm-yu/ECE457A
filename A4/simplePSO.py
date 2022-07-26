@@ -78,8 +78,8 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
         avg_fitnesses.append(avg_fitness)
         best_fitnesses.append(cost(global_best))
 
-    print(avg_fitnesses)
-    print(best_fitnesses)
+    print(best_fitnesses[-1])
+    print(global_best)
 
     plt.plot(avg_fitnesses)
     plt.title('simple PSO average fitness')
@@ -96,4 +96,4 @@ def simplePSO(max_iterations, population_size, w, c):  # c = c1 = c2
 
 w = 0.792
 c = 1.4944
-simplePSO(50, 1, w, c)
+simplePSO(50, 10, w, c)
